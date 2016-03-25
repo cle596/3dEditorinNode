@@ -23,17 +23,15 @@ var rei_material = new THREE.MeshBasicMaterial({
   map: rei_texture
 });
 
+var piece_colors = [0x0085ff];
+
 var material = new THREE.MeshBasicMaterial({
-  color: 0x0085ff
-});
-var line_material = new THREE.LineBasicMaterial({
-  color: 0xffffff
+  color: piece_colors[0]
 });
 
 var cube = new THREE.Object3D();
 
 cube.add(new THREE.Mesh(geometry, material));
-cube.add(new THREE.LineSegments(geometry, line_material));
 scene.add(cube);
 
 cube.rotation.x = 5;
@@ -42,15 +40,39 @@ cube.rotation.z = 3;
 
 camera.position.z = 5;
 
+var raycaster = new THREE.Raycaster();
+var mouse = new THREE.Vector2();
+var intersects = [];
+
 function render() {
   requestAnimationFrame(render);
-  renderer.render(scene, camera);
   cube.rotation.x += .01;
+  renderer.render(scene, camera);
 }
-render();
 
 $(window).resize(function() {
   renderer.setSize(window.innerWidth, window.innerHeight);
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
 });
+
+var color_changed = false;
+
+$(window).click(function(e) {
+  mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
+  mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
+  raycaster.setFromCamera(mouse, camera);
+  intersects = raycaster.intersectObjects(scene.children,true);
+  for (var i = 0; i < intersects.length; i++) {
+    if (!color_changed){
+      intersects[i].object.material.color.set(0x000000);
+      color_changed = !color_changed;
+    }
+    else {
+      intersects[i].object.material.color.set(piece_colors[0]);
+      color_changed = !color_changed;
+    }
+  }
+});
+
+render();
