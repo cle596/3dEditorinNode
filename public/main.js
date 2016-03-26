@@ -1,6 +1,6 @@
 var scene = new THREE.Scene();
 var camera = new THREE.PerspectiveCamera(
-  75,
+  90,
   window.innerWidth / window.innerHeight,
   0.1,
   1000
@@ -45,10 +45,12 @@ var cubes = [];
 var y = 0;
 for (var x=0;x<piece_colors.length;++x){
   cubes.push(create_cube(x));
-  cubes[x].position.x = y;
+  cubes[x].position.y = y;
+  /*
   cubes[x].rotation.x = 5;
   cubes[x].rotation.y = 4;
   cubes[x].rotation.z = 3;
+  */
   scene.add(cubes[x]);
   y+=2;
 }
@@ -62,7 +64,9 @@ var intersects = [];
 function render() {
   requestAnimationFrame(render);
   for (var x=0;x<cubes.length;++x){
-    cubes[x].rotation.x += .01;
+    if (cubes[x].position.y > -1){
+      cubes[x].position.y -= .01;
+    }
   }
   renderer.render(scene, camera);
 }
@@ -89,6 +93,27 @@ $(window).click(function(e) {
       intersects[i].object.material.color.set(piece_colors[0]);
       color_changed = !color_changed;
     }
+  }
+});
+
+$(window).keydown(function(e){
+  if(e.keyCode == 37){//left
+    cubes[0].position.x -= .5;
+  }
+  else if(e.keyCode == 38){//up
+    cubes[0].position.y += .5;
+  }
+  else if(e.keyCode == 39){//right
+    cubes[0].position.x += .5;
+  }
+  else if(e.keyCode == 40){//down
+    cubes[0].position.y -= .5;
+  }
+  else if (e.keyCode == 65){
+    camera.position.x -= .5;
+  }
+  else if (e.keyCode == 68){
+    camera.position.x += .5;
   }
 });
 
