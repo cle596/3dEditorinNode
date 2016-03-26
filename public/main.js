@@ -13,7 +13,7 @@ renderer.setClearColor(0xffffff, 1);
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
-var geometry = new THREE.BoxGeometry(2, 2, 2);
+var geometry = new THREE.BoxGeometry(1, 1, 1);
 
 var rei_texture = new THREE.TextureLoader().load("rei.png");
 rei_texture.wrapS = THREE.RepeatWrapping;
@@ -23,20 +23,35 @@ var rei_material = new THREE.MeshBasicMaterial({
   map: rei_texture
 });
 
-var piece_colors = [0x0085ff];
+var piece_colors = [
+  0x0085ff,
+  0xffed5d,
+  0x6bd2db,
+  0x990067
+];
 
-var material = new THREE.MeshBasicMaterial({
-  color: piece_colors[0]
-});
+function create_cube(color_index){
+  var geometry = new THREE.BoxGeometry(1, 1, 1);
+  var material = new THREE.MeshBasicMaterial({
+    color: piece_colors[color_index]
+  });
+  var cube = new THREE.Object3D();
+  cube.add(new THREE.Mesh(geometry,material));
+  return cube;
+}
 
-var cube = new THREE.Object3D();
+var cubes = [];
 
-cube.add(new THREE.Mesh(geometry, material));
-scene.add(cube);
-
-cube.rotation.x = 5;
-cube.rotation.y = 4;
-cube.rotation.z = 3;
+var y = 0;
+for (var x=0;x<piece_colors.length;++x){
+  cubes.push(create_cube(x));
+  cubes[x].position.x = y;
+  cubes[x].rotation.x = 5;
+  cubes[x].rotation.y = 4;
+  cubes[x].rotation.z = 3;
+  scene.add(cubes[x]);
+  y+=2;
+}
 
 camera.position.z = 5;
 
@@ -46,7 +61,9 @@ var intersects = [];
 
 function render() {
   requestAnimationFrame(render);
-  cube.rotation.x += .01;
+  for (var x=0;x<cubes.length;++x){
+    cubes[x].rotation.x += .01;
+  }
   renderer.render(scene, camera);
 }
 
