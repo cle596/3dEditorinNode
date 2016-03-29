@@ -63,7 +63,7 @@ var intersects = [];
 
 function render() {
   requestAnimationFrame(render);
-  camera.rotation.x += .01;
+  camera.rotation.y += .001;
   /*
   for (var x=0;x<cubes.length;++x){
     if (cubes[x].position.y > -1){
@@ -117,6 +117,11 @@ $(window).keydown(function(e){
   }
   else if (e.keyCode == 68){
     camera.position.x += .5;
+  }
+  else if (e.keyCode == 32){
+    camera.rotation.x=0;
+    camera.rotation.y=0;
+    camera.rotation.z=0;
   }
 });
 
