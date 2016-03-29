@@ -63,11 +63,14 @@ var intersects = [];
 
 function render() {
   requestAnimationFrame(render);
+  camera.rotation.x += .01;
+  /*
   for (var x=0;x<cubes.length;++x){
     if (cubes[x].position.y > -1){
       cubes[x].position.y -= .01;
     }
   }
+  */
   renderer.render(scene, camera);
 }
 
