@@ -8,6 +8,20 @@ var camera = new THREE.PerspectiveCamera(
 );
 
 /*
+var width = window.innerWidth;
+var height = window.innerHeight;
+
+var camera = new THREE.OrthographicCamera(
+  width / - 2,
+  width / 2,
+  height / 2,
+  height / - 2,
+  1,
+  1000
+);
+scene.add( camera );
+*/
+/*
 var camera = new THREE.CubeCamera( 1, 100000, 128 );
 scene.add( camera );
 */
@@ -44,6 +58,9 @@ var wood_material = new THREE.MeshBasicMaterial({
   map: wood_texture
 });
 
+
+
+
 var piece_colors = [
   0x0085ff,
   0xffed5d,
@@ -51,26 +68,25 @@ var piece_colors = [
   0x990067
 ];
 
-function create_cube(color_index,texture) {
+var cube;
+function create_cube() {
   var geometry = new THREE.BoxGeometry(4, 4, 4);
-  var material = new THREE.MeshBasicMaterial({
-    //color: piece_colors[color_index],
-    map: wood_texture
-  });
-  var cube = new THREE.Object3D();
-  var mesh = new THREE.Mesh(geometry,material);
-  /*
-  mesh.scale.x = texture.image.width;
-  mesh.scale.y = texture.image.height;
-*/
-  cube.add(mesh);
-  return cube;
+  var fabric_texture = new THREE.TextureLoader()
+    .load("fabric.jpg",function(texture){
+      var material = new THREE.MeshBasicMaterial({
+        //color: piece_colors[color_index],
+        map: texture
+      });
+      cube = new THREE.Mesh(geometry,material);
+      scene.add(cube);
+      console.log("loaded!");
+    });
 }
 
-var cubes = [];
 
-var y = 0;
+
 /*
+var y =0;
 for (var x = 0; x < piece_colors.length; ++x) {
   cubes.push(create_cube(x));
   cubes[x].position.y = y;
@@ -82,10 +98,8 @@ for (var x = 0; x < piece_colors.length; ++x) {
 }
 */
 
-cubes.push(create_cube(0,wood_texture));
-scene.add(cubes[0]);
 
-camera.position.z = 5;
+camera.position.z = 8;
 
 var raycaster = new THREE.Raycaster();
 var mouse = new THREE.Vector2();
@@ -158,8 +172,8 @@ $(window).mousemove(function(e) {
     camera.rotation.y -= deltaX * offset;
     camera.rotation.x += deltaY * offset;
     */
-    cubes[0].rotation.y -= deltaX * offset;
-    cubes[0].rotation.x += deltaY * offset;
+    cube.rotation.y -= deltaX * offset;
+    cube.rotation.x += deltaY * offset;
     mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
     mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
   }
@@ -199,3 +213,4 @@ $('body').mousewheel(function(event) {
 });
 
 render();
+create_cube();

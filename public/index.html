@@ -24,19 +24,20 @@
     }
 
     .guibutton {
-        background-color: #4CAF50; /* Green */
-        border: none;
-        color: white;
-        padding: 15px 32px;
+        background-color: #dddddd; /* Green */
+        border: 1px;
+        border-radius: 5px;
+        color: black;
+        padding: 10px 10px;
         text-align: center;
         text-decoration: none;
         display: inline-block;
-        font-size: 16px;
+        font-size: 14px;
     }
 
     #gui {
       position: absolute;
-      font-size: 50px;
+      font-size: 30px;
     }
 
 
@@ -45,8 +46,9 @@
 
 <body>
   <div id="gui">
-    shit<br>
-    <button class="guibutton">select</button>
+    menu<br>
+    <button class="guibutton" id="rotate">rotate</button>
+    <button class="guibutton" id="sculpt">sculpt</button>
   </div>
   <script src="three.min.js"></script>
   <script src="jquery.min.js"></script>
