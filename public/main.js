@@ -69,21 +69,51 @@ var piece_colors = [
 ];
 
 var cube;
+
 function create_cube() {
   var geometry = new THREE.BoxGeometry(4, 4, 4);
   var fabric_texture = new THREE.TextureLoader()
-    .load("fabric.jpg",function(texture){
+    .load("fabric.jpg", function(texture) {
       var material = new THREE.MeshBasicMaterial({
         //color: piece_colors[color_index],
         map: texture
       });
-      cube = new THREE.Mesh(geometry,material);
+      cube = new THREE.Mesh(geometry, material);
       scene.add(cube);
-      console.log("loaded!");
+      //console.log("loaded!");
     });
 }
 
+function create_buffer_geometry() {
+  var geometry = new THREE.BufferGeometry();
+  var vertexPositions = [
+    [-1.0, -1.0, 1.0],
+    [1.0, -1.0, 1.0],
+    [1.0, 1.0, 1.0],
 
+    [1.0, 1.0, 1.0],
+    [-1.0, 1.0, 1.0],
+    [-1.0, -1.0, 1.0]
+  ];
+  var vertices = new Float32Array(vertexPositions.length * 3);
+
+  for (var i = 0; i < vertexPositions.length; i++) {
+    vertices[i * 3 + 0] = vertexPositions[i][0];
+    vertices[i * 3 + 1] = vertexPositions[i][1];
+    vertices[i * 3 + 2] = vertexPositions[i][2];
+  }
+
+  geometry.addAttribute('position', new THREE.BufferAttribute(vertices, 3));
+  var material = new THREE.MeshBasicMaterial({
+    color: 0xff0000
+  });
+  cube = new THREE.Mesh(geometry, material);
+  scene.add(cube);
+}
+
+render();
+create_buffer_geometry();
+//create_cube();
 
 /*
 var y =0;
@@ -211,6 +241,3 @@ $('body').mousewheel(function(event) {
     camera.updateProjectionMatrix();
   }
 });
-
-render();
-create_cube();
