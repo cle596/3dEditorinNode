@@ -15,12 +15,23 @@ document.body.appendChild(renderer.domElement);
 
 var geometry = new THREE.BoxGeometry(1, 1, 1);
 
+/*
 var rei_texture = new THREE.TextureLoader().load("rei.png");
 rei_texture.wrapS = THREE.RepeatWrapping;
 rei_texture.wrapT = THREE.RepeatWrapping;
 rei_texture.repeat.set(4, 4);
 var rei_material = new THREE.MeshBasicMaterial({
   map: rei_texture
+});
+*/
+
+var metal_texture = new THREE.TextureLoader().load("metal.jpg");
+console.log(metal_texture);
+//metal_texture.wrapS = THREE.RepeatWrapping;
+//metal_texture.wrapT = THREE.RepeatWrapping;
+//metal_texture.repeat.set(4, 4);
+var metal_material = new THREE.MeshBasicMaterial({
+  map: metal_texture
 });
 
 var piece_colors = [
@@ -30,31 +41,39 @@ var piece_colors = [
   0x990067
 ];
 
-function create_cube(color_index) {
-  var geometry = new THREE.BoxGeometry(1, 1, 1);
+function create_cube(color_index,texture) {
+  var geometry = new THREE.BoxGeometry(4, 4, 4);
   var material = new THREE.MeshBasicMaterial({
     //color: piece_colors[color_index],
-    map: rei_texture
+    map: metal_texture
   });
   var cube = new THREE.Object3D();
-  cube.add(new THREE.Mesh(geometry, material));
+  var mesh = new THREE.Mesh(geometry,material);
+  /*
+  mesh.scale.x = texture.image.width;
+  mesh.scale.y = texture.image.height;
+*/
+  cube.add(mesh);
   return cube;
 }
 
 var cubes = [];
 
 var y = 0;
+/*
 for (var x = 0; x < piece_colors.length; ++x) {
   cubes.push(create_cube(x));
   cubes[x].position.y = y;
-  /*
   cubes[x].rotation.x = 5;
   cubes[x].rotation.y = 4;
   cubes[x].rotation.z = 3;
-  */
   scene.add(cubes[x]);
   y += 2;
 }
+*/
+
+cubes.push(create_cube(0,metal_texture));
+scene.add(cubes[0]);
 
 camera.position.z = 5;
 
@@ -64,7 +83,7 @@ var intersects = [];
 
 function render() {
   requestAnimationFrame(render);
-  camera.rotation.y += .0001;
+  //camera.rotation.y += .0001;
   /*
   for (var x=0;x<cubes.length;++x){
     if (cubes[x].position.y > -1){
