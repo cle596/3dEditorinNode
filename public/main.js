@@ -63,7 +63,7 @@ var intersects = [];
 
 function render() {
   requestAnimationFrame(render);
-  camera.rotation.y += .001;
+  camera.rotation.y += .0001;
   /*
   for (var x=0;x<cubes.length;++x){
     if (cubes[x].position.y > -1){
@@ -123,6 +123,20 @@ $(window).keydown(function(e){
     camera.rotation.y=0;
     camera.rotation.z=0;
   }
+});
+
+
+$('body').mousewheel(function(event) {
+    if (event.deltaY>0){
+      console.log("up");
+      camera.fov -= 1;
+      camera.updateProjectionMatrix();
+    }
+    else {
+      console.log("down");
+      camera.fov += 1;
+      camera.updateProjectionMatrix();
+    }
 });
 
 render();
