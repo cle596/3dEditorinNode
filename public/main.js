@@ -31,13 +31,17 @@ var rei_material = new THREE.MeshBasicMaterial({
 });
 */
 
+/*
 var metal_texture = new THREE.TextureLoader().load("metal.jpg");
 console.log(metal_texture);
-//metal_texture.wrapS = THREE.RepeatWrapping;
-//metal_texture.wrapT = THREE.RepeatWrapping;
-//metal_texture.repeat.set(4, 4);
 var metal_material = new THREE.MeshBasicMaterial({
   map: metal_texture
+});
+*/
+
+var wood_texture = new THREE.TextureLoader().load("wood.jpg");
+var wood_material = new THREE.MeshBasicMaterial({
+  map: wood_texture
 });
 
 var piece_colors = [
@@ -51,7 +55,7 @@ function create_cube(color_index,texture) {
   var geometry = new THREE.BoxGeometry(4, 4, 4);
   var material = new THREE.MeshBasicMaterial({
     //color: piece_colors[color_index],
-    map: metal_texture
+    map: wood_texture
   });
   var cube = new THREE.Object3D();
   var mesh = new THREE.Mesh(geometry,material);
@@ -78,7 +82,7 @@ for (var x = 0; x < piece_colors.length; ++x) {
 }
 */
 
-cubes.push(create_cube(0,metal_texture));
+cubes.push(create_cube(0,wood_texture));
 scene.add(cubes[0]);
 
 camera.position.z = 5;
