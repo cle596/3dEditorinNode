@@ -81,7 +81,10 @@ $(window).resize(function() {
 });
 
 var color_changed = false;
+var clicked = false;
+var down = false;
 
+/*
 $(window).click(function(e) {
   mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
   mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
@@ -96,6 +99,33 @@ $(window).click(function(e) {
       intersects[i].object.material.color.set(piece_colors[0]);
       color_changed = !color_changed;
     }
+  }
+});
+*/
+
+$(window).mousedown(function(e){
+  down = !down;
+  mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
+  mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
+  console.log(mouse.x,mouse.y);
+});
+
+$(window).mouseup(function(e){
+  down = !down;
+});
+
+$(window).mousemove(function(e){
+  var offset = .5;
+  var deltaX; var deltaY;
+  deltaX = 0; deltaY = 0 ;
+  if (down){
+    deltaX = mouse.x - ((e.clientX / window.innerWidth) * 2 - 1);
+    deltaY = mouse.y - (-(e.clientY / window.innerHeight) * 2 + 1);
+    //console.log(deltaX,deltaY);
+    camera.rotation.y -= deltaX * offset;
+    camera.rotation.x += deltaY * offset;
+    mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
+    mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
   }
 });
 
