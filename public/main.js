@@ -30,20 +30,21 @@ var piece_colors = [
   0x990067
 ];
 
-function create_cube(color_index){
+function create_cube(color_index) {
   var geometry = new THREE.BoxGeometry(1, 1, 1);
   var material = new THREE.MeshBasicMaterial({
-    color: piece_colors[color_index]
+    //color: piece_colors[color_index],
+    map: rei_texture
   });
   var cube = new THREE.Object3D();
-  cube.add(new THREE.Mesh(geometry,material));
+  cube.add(new THREE.Mesh(geometry, material));
   return cube;
 }
 
 var cubes = [];
 
 var y = 0;
-for (var x=0;x<piece_colors.length;++x){
+for (var x = 0; x < piece_colors.length; ++x) {
   cubes.push(create_cube(x));
   cubes[x].position.y = y;
   /*
@@ -52,7 +53,7 @@ for (var x=0;x<piece_colors.length;++x){
   cubes[x].rotation.z = 3;
   */
   scene.add(cubes[x]);
-  y+=2;
+  y += 2;
 }
 
 camera.position.z = 5;
@@ -103,22 +104,24 @@ $(window).click(function(e) {
 });
 */
 
-$(window).mousedown(function(e){
+$(window).mousedown(function(e) {
   down = !down;
   mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
   mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
-  console.log(mouse.x,mouse.y);
+  //console.log(mouse.x, mouse.y);
 });
 
-$(window).mouseup(function(e){
+$(window).mouseup(function(e) {
   down = !down;
 });
 
-$(window).mousemove(function(e){
-  var offset = .5;
-  var deltaX; var deltaY;
-  deltaX = 0; deltaY = 0 ;
-  if (down){
+$(window).mousemove(function(e) {
+  var offset = 1;
+  var deltaX;
+  var deltaY;
+  deltaX = 0;
+  deltaY = 0;
+  if (down) {
     deltaX = mouse.x - ((e.clientX / window.innerWidth) * 2 - 1);
     deltaY = mouse.y - (-(e.clientY / window.innerHeight) * 2 + 1);
     //console.log(deltaX,deltaY);
@@ -129,44 +132,37 @@ $(window).mousemove(function(e){
   }
 });
 
-$(window).keydown(function(e){
-  if(e.keyCode == 37){//left
+$(window).keydown(function(e) {
+  if (e.keyCode == 37) { //left
     cubes[0].position.x -= .5;
-  }
-  else if(e.keyCode == 38){//up
+  } else if (e.keyCode == 38) { //up
     cubes[0].position.y += .5;
-  }
-  else if(e.keyCode == 39){//right
+  } else if (e.keyCode == 39) { //right
     cubes[0].position.x += .5;
-  }
-  else if(e.keyCode == 40){//down
+  } else if (e.keyCode == 40) { //down
     cubes[0].position.y -= .5;
-  }
-  else if (e.keyCode == 65){
+  } else if (e.keyCode == 65) {
     camera.position.x -= .5;
-  }
-  else if (e.keyCode == 68){
+  } else if (e.keyCode == 68) {
     camera.position.x += .5;
-  }
-  else if (e.keyCode == 32){
-    camera.rotation.x=0;
-    camera.rotation.y=0;
-    camera.rotation.z=0;
+  } else if (e.keyCode == 32) {
+    camera.rotation.x = 0;
+    camera.rotation.y = 0;
+    camera.rotation.z = 0;
   }
 });
 
 
 $('body').mousewheel(function(event) {
-    if (event.deltaY>0){
-      console.log("up");
-      camera.fov -= 1;
-      camera.updateProjectionMatrix();
-    }
-    else {
-      console.log("down");
-      camera.fov += 1;
-      camera.updateProjectionMatrix();
-    }
+  if (event.deltaY > 0 && camera.fov > 3) {
+    console.log("up");
+    camera.fov -= 3;
+    camera.updateProjectionMatrix();
+  } else if (event.deltaY < 0 && camera.fov < 150) {
+    console.log("down");
+    camera.fov += 3;
+    camera.updateProjectionMatrix();
+  }
 });
 
 render();
