@@ -1,10 +1,16 @@
 var scene = new THREE.Scene();
+
 var camera = new THREE.PerspectiveCamera(
   90,
   window.innerWidth / window.innerHeight,
   0.1,
   1000
 );
+
+/*
+var camera = new THREE.CubeCamera( 1, 100000, 128 );
+scene.add( camera );
+*/
 
 var renderer = new THREE.WebGLRenderer({
   antialias: true
@@ -144,8 +150,12 @@ $(window).mousemove(function(e) {
     deltaX = mouse.x - ((e.clientX / window.innerWidth) * 2 - 1);
     deltaY = mouse.y - (-(e.clientY / window.innerHeight) * 2 + 1);
     //console.log(deltaX,deltaY);
+    /*
     camera.rotation.y -= deltaX * offset;
     camera.rotation.x += deltaY * offset;
+    */
+    cubes[0].rotation.y -= deltaX * offset;
+    cubes[0].rotation.x += deltaY * offset;
     mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
     mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
   }
